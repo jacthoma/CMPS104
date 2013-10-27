@@ -1,0 +1,55 @@
+State #52 is non-accepting -
+ associated rule line numbers:
+	118
+ out-transitions: [ 0-9  A-Z  _  a-z ]
+ jam-transitions: EOF [ \000-/  :-@  [-^  `  {-\377 ]
+
+State #73 is non-accepting -
+ associated rule line numbers:
+	91
+ out-transitions: [ \231 ]
+ jam-transitions: EOF [ \000-\230  \232-\377 ]
+
+State #75 is non-accepting -
+ associated rule line numbers:
+	90
+ out-transitions: [ \000-\t  \v-\377 ]
+ jam-transitions: EOF [ \n ]
+
+State #92 is non-accepting -
+ associated rule line numbers:
+	91
+ out-transitions: [ \000-\t  \v-\177  \201-\230  \232-\341  \343-\377 ]
+ jam-transitions: EOF [ \n  \200  \231  \342 ]
+
+State #94 is non-accepting -
+ associated rule line numbers:
+	90
+ out-transitions: [ "  0  \  n  t  \200  \231  \342 ]
+ jam-transitions: EOF [ \000-!  #-/  1-[  ]-m  o-s  u-\177  \201-\230  \232-\341  \343-\377 ]
+
+State #106 is non-accepting -
+ associated rule line numbers:
+	91
+ out-transitions: [ \342 ]
+ jam-transitions: EOF [ \000-\341  \343-\377 ]
+
+State #107 is non-accepting -
+ associated rule line numbers:
+	91
+ out-transitions: [ "  0  \  n  t  \200  \231  \342 ]
+ jam-transitions: EOF [ \000-!  #-/  1-[  ]-m  o-s  u-\177  \201-\230  \232-\341  \343-\377 ]
+
+State #113 is non-accepting -
+ associated rule line numbers:
+	91
+ out-transitions: [ \200 ]
+ jam-transitions: EOF [ \000-\177  \201-\377 ]
+
+State #117 is non-accepting -
+ associated rule line numbers:
+	91
+ out-transitions: [ \231 ]
+ jam-transitions: EOF [ \000-\230  \232-\377 ]
+
+Compressed tables always back up.

@@ -1,0 +1,17 @@
+#all: oc_compiler
+
+oc_compiler: main.o auxlib.o stringset.o
+	g++ -g -O0 -Wall -Wextra -std=gnu++0x main.o auxlib.o stringset.o -o oc_compiler
+
+main.o: main.cc jct_lib.h
+	g++ -g -O0 -Wall -Wextra -std=gnu++0x main.cc jct_lib.h -c
+
+auxlib.o: auxlib.cc auxlib.h
+	g++ -g -O0 -Wall -Wextra -std=gnu++0x auxlib.cc auxlib.h -c
+
+stringset.o: stringset.cc stringset.h
+	g++ -g -O0 -Wall -Wextra -std=gnu++0x stringset.cc stringset.h -c
+
+clean:
+	\rm *.o
+	\rm oc_compiler
