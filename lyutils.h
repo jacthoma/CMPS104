@@ -27,7 +27,7 @@ bool is_defined_token (int symbol);
 
 const string* scanner_filename (int filenr);
 void scanner_newfilename (const char* filename);
-void scanner_badchar (unsigned char bad);
+//void scanner_badchar (unsigned char bad);
 void scanner_badtoken (char* lexeme);
 void scanner_newline (void);
 void scanner_setecho (bool echoflag);

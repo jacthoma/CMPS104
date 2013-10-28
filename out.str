@@ -1,0 +1,8 @@
+stringset[   1]:   10159970873491820195 0x7ff282c03e18->"1"
+                   11597697714117577063 0x7ff282c03d98->"="
+stringset[   3]:   12597418120160561823 0x7ff282c03c98->"int"
+stringset[   4]:    5344662657899890615 0x7ff282d00168->";"
+stringset[   7]:    4993892634952068459 0x7ff282c03d18->"a"
+load_factor = 0.455
+bucket_count = 11
+max_bucket_size = 2

@@ -24,7 +24,6 @@ astree* new_astree (int symbol, int filenr, int linenr, int offset,
    return tree;
 }
 
-
 astree* adopt1 (astree* root, astree* child) {
    root->children.push_back (child);
    DEBUGF ('a', "%p (%s) adopting %p (%s)\n",
@@ -45,7 +44,6 @@ astree* adopt1sym (astree* root, astree* child, int symbol) {
    return root;
 }
 
-
 static void dump_node (FILE* outfile, astree* node) {
    fprintf (outfile, "%p->{%s(%d) %ld:%ld.%03ld \"%s\" [",
             node, get_yytname (node->symbol), node->symbol,
@@ -74,6 +72,7 @@ void dump_astree (FILE* outfile, astree* root) {
    dump_astree_rec (outfile, root, 0);
    fflush (NULL);
 }
+
 /*
 void yyprint (FILE* outfile, unsigned short toknum, astree* yyvaluep) {
    DEBUGF ('f', "toknum = %d, yyvaluep = %p\n", toknum, yyvaluep);

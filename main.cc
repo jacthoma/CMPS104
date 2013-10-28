@@ -9,10 +9,11 @@ using namespace std;
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <iostream>
 
+#include "jct_lib.h"
 #include "astree.h"
 #include "auxlib.h"
-#include "emit.h"
 #include "lyutils.h"
 #include "stringset.h"
 
@@ -70,6 +71,10 @@ void scan_opts (int argc, char** argv) {
 }
 
 int main (int argc, char** argv) {
+
+   FILE *output_file_tokens = fopen (str_to_char("out.tok"), "w");
+   FILE *output_file_stringset = fopen (str_to_char("out.str"), "w");
+
    int parsecode = 0;
    set_execname (argv[0]);
    DEBUGSTMT ('m',
@@ -80,17 +85,23 @@ int main (int argc, char** argv) {
    scan_opts (argc, argv);
    scanner_setecho (want_echo());
    parsecode = yyparse();
+   dump_stringset (output_file_stringset);
+   cout << "199" << endl;
+   dump_astree (output_file_tokens, yyparse_astree);  
+   cout << "201" << endl;
    if (parsecode) {
       errprintf ("%:parse failed (%d)\n", parsecode);
    }else {
       DEBUGSTMT ('a', dump_astree (stderr, yyparse_astree); );
-      emit_sm_code (yyparse_astree);
    }
-   free_ast (yyparse_astree);
+   //free_ast (yyparse_astree);
    yyin_cpp_pclose();
    DEBUGSTMT ('s', dump_stringset (stderr); );
    yylex_destroy();
    return get_exitstatus();
+
+   fclose (output_file_stringset);
+   fclose (output_file_tokens);
 }
 
 RCSC("$Id: main.cc,v 1.4 2013-09-20 17:52:13-07 - - $")

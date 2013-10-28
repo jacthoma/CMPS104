@@ -89,6 +89,7 @@ TOK_STRINGCON	(’([^\\’\n]|\\[\\’"0nt])’)
 
 {TOK_CHARCON}	{ return yylval_token(TOK_CHARCON); }
 {TOK_STRINGCON} { return yylval_token(TOK_STRINGCON); }
+{TOK_INTCON}	{ return yylval_token(TOK_INTCON); }
 
 {TOK_ARRAY}		{ return yylval_token(TOK_ARRAY);}
 "("             { return yylval_token('('); }
@@ -121,14 +122,5 @@ TOK_STRINGCON	(’([^\\’\n]|\\[\\’"0nt])’)
                       return yylval_token (TOK_CHARCON); }
 {INVAL_STRINGCON}	{ scanner_badtoken (yytext);
                       return yylval_token (TOK_STRINGCON); }
-
-.              		{ scanner_badchar (*yytext); }
-
+.	{printf("bad input character '%s' at line %d\n", yytext, yylineno);}
 %%
-
-// set: %option noyywrap
-//int yywrap (void){
-//   yy_delete_buffer (YY_CURRENT_BUFFER);
-//   if (yy_flex_debug) eprintf ("yywrap() return %d\n", TRUE);
-//   return TRUE;
-//}

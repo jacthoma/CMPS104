@@ -21,17 +21,22 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "lyutils.h"
 #include "auxlib.h"
+#include "astree.h"
 #include "stringset.h"
 #include <ctime>
 
 using namespace std;
 
-const string CPP = "/usr/bin/cpp";
+const string cpp_name = "/usr/bin/cpp";
 const size_t LINESIZE = 1024;
+string yyin_cpp_command;
 // From cppstrtok.cc
 // 
 // Chomp the last character from a buffer if it is delim.
+
+/*
 void chomp (char* string, char delim) {
    size_t len = strlen (string);
    if (len == 0) return;
@@ -39,6 +44,7 @@ void chomp (char* string, char delim) {
    if (*nlpos == delim) *nlpos = '\0';
 }
 
+/* USE LYUTIL ASTRE INPUT
 // Run cpp against the lines of the file.
 void cpplines (FILE* pipe, char* filename, FILE* debug_file) {
    	int linenr = 1;
@@ -69,6 +75,28 @@ void cpplines (FILE* pipe, char* filename, FILE* debug_file) {
       ++linenr;
    	}	
 }
+*/
+
+// Open a pipe from the C preprocessor.
+// Exit failure if can't.
+// Assignes opened pipe to FILE* yyin.
+void yyin_cpp_popen (const char* filename) {
+   yyin_cpp_command = cpp_name;
+   yyin_cpp_command += " ";
+   yyin_cpp_command += filename;
+   yyin = popen (yyin_cpp_command.c_str(), "r");
+   if (yyin == NULL) {
+      syserrprintf (yyin_cpp_command.c_str());
+      exit (get_exitstatus());
+   }
+}
+
+void yyin_cpp_pclose (void) {
+   int pclose_rc = pclose (yyin);
+   eprint_status (yyin_cpp_command.c_str(), pclose_rc);
+   if (pclose_rc != 0) set_exitstatus (EXIT_FAILURE);
+}
+
 
 int main (int argc, char* argv[]){
 // 	flag variables
@@ -147,24 +175,43 @@ int main (int argc, char* argv[]){
 				abort();
 		}
 	}
-    string command = CPP + " " + in_program_file;
-    fprintf (debug_file, "command=\"%s\"\n", command.c_str());
-    FILE *pipe = popen (command.c_str(), "r");
-    if (pipe == NULL) {
-        syserrprintf (command.c_str());
-    }else {
-        cpplines (pipe, str_to_char(in_program_file), debug_file);
-        int pclose_rc = pclose (pipe);
-        eprint_status (command.c_str(), pclose_rc);
-    }
-    FILE *output_file = fopen(str_to_char(program_name + ".str"), "w");
-    dump_stringset(output_file);
-    fclose(output_file);
-    fclose(debug_file);
-    if(!error_flag){
-	fprintf(stderr, "No errors.\n");
-    }
-    fprintf(stderr, "\n");
-    fclose(error_file);
-    return 0;
+   //string command = CPP + " " + in_program_file;
+   //fprintf (debug_file, "command=\"%s\"\n", command.c_str());
+   //FILE *pipe = popen (command.c_str(), "r");
+   yyin_cpp_popen (str_to_char(in_program_file));
+   /*
+   if (pipe == NULL) {
+     syserrprintf (command.c_str());
+   }else {
+     cpplines (pipe, str_to_char(in_program_file), debug_file);
+     int pclose_rc = pclose (pipe);
+     eprint_status (command.c_str(), pclose_rc);
+   }
+   */
+   int parsecode = 0;
+   parsecode = yyparse();
+
+// Declare and open output files
+   FILE *output_file_tokens = fopen (str_to_char(program_name + ".tok"), "w");
+   FILE *output_file_stringset = fopen (str_to_char(program_name + ".str"), "w");
+// Write to output files 
+   dump_stringset (output_file_stringset);
+   cout << "199" << endl;
+   dump_astree (output_file_tokens, yyparse_astree);	
+   cout << "201" << endl;
+// Close output files
+   fclose (output_file_stringset);
+   fclose (output_file_tokens);
+   fclose (debug_file);
+   if (!error_flag){
+      fprintf (stderr, "No errors.\n");
+   }
+   fprintf (stderr, "\n");
+   fclose (error_file);
+	
+   /////free_ast (yyparse_astree);
+   cout << "212" << endl;
+   yyin_cpp_pclose();
+   yylex_destroy();
+   return 0;
 }

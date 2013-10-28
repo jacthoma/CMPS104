@@ -1,9 +1,3 @@
-State #52 is non-accepting -
- associated rule line numbers:
-	118
- out-transitions: [ 0-9  A-Z  _  a-z ]
- jam-transitions: EOF [ \000-/  :-@  [-^  `  {-\377 ]
-
 State #73 is non-accepting -
  associated rule line numbers:
 	91

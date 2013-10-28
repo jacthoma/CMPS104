@@ -9,8 +9,8 @@ VALGRIND  = valgrind --leak-check=full --show-reachable=yes
 #
 # Definitions of list of files:
 #
-HSOURCES  = astree.h  emit.h  lyutils.h  auxlib.h  stringset.h
-CSOURCES  = astree.cc emit.cc lyutils.cc auxlib.cc stringset.cc main.cc
+HSOURCES  = astree.h  lyutils.h  auxlib.h  stringset.h
+CSOURCES  = astree.cc lyutils.cc auxlib.cc stringset.cc main.cc
 LSOURCES  = scanner.l
 YSOURCES  = parser.y
 ETCSRC    = README ${MKFILE} ${DEPSFILE}
@@ -19,7 +19,7 @@ HYGEN     = yyparse.h
 CYGEN     = yyparse.cc
 CGENS     = ${CLGEN} ${CYGEN}
 ALLGENS   = ${HYGEN} ${CGENS}
-EXECBIN   = zexprsm
+EXECBIN   = oc
 ALLCSRC   = ${CSOURCES} ${CGENS}
 OBJECTS   = ${ALLCSRC:.cc=.o}
 LREPORT   = yylex.output
@@ -47,7 +47,6 @@ all : ${EXECBIN}
 #
 ${EXECBIN} : ${OBJECTS}
 	${GCC} -o${EXECBIN} ${OBJECTS}
-	ident ${OBJECTS} ${EXECBIN} >${IREPORT}
 
 #
 # Build an object file form a C source file.
@@ -95,6 +94,7 @@ clean :
 spotless : clean
 	- rm ${EXECBIN} List.*.ps List.*.pdf
 
+
 #
 # Build the dependencies file using the C preprocessor
 #

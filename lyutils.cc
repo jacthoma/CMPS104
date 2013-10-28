@@ -49,14 +49,14 @@ void yyerror (const char* message) {
    errprintf ("%:%s: %d: %s\n",
               included_filenames.back().c_str(), scan_linenr, message);
 }
-
+/*
 void scanner_badchar (unsigned char bad) {
    char char_rep[16];
    sprintf (char_rep, isgraph ((int) bad) ? "%c" : "\\%03o", bad);
    errprintf ("%:%s: %d: invalid source character (%s)\n",
               included_filenames.back().c_str(), scan_linenr, char_rep);
 }
-
+*/
 void scanner_badtoken (char* lexeme) {
    errprintf ("%:%s: %d: invalid token (%s)\n",
               included_filenames.back().c_str(), scan_linenr, lexeme);
@@ -64,6 +64,17 @@ void scanner_badtoken (char* lexeme) {
 
 int yylval_token (int symbol) {
    int offset = scan_offset - yyleng;
+   /*
+  cout << "symbol      :" << get_yytname (symbol) << endl
+       << "filename    :" << included_filenames.size() - 1 << endl
+       << "line number :" << scan_linenr << endl
+       << "offset      :" << offset << endl
+       << "token       :" << yytext << endl << endl;
+  */
+  cout << included_filenames.size() - 1 << " " << scan_linenr 
+       << "." << offset << "   " << symbol << " " << get_yytname(symbol) 
+       << " (" << yytext << ")" << endl;
+       
    yylval = new_astree (symbol, included_filenames.size() - 1,
                         scan_linenr, offset, yytext);
    return symbol;
@@ -74,18 +85,17 @@ void error_destructor (astree* tree) {
    DEBUGSTMT ('a', dump_astree (stderr, tree); );
    free_ast (tree);
 }
-/*
+
 astree* new_parseroot (void) {
-   yyparse_astree = new_astree (ROOT, 0, 0, 0, "<<ROOT>>");
+   yyparse_astree = new_astree (TOK_ROOT, 0, 0, 0, "<<ROOT>>");
    return yyparse_astree;
 }
-*/
+
 void scanner_include (void) {
    scanner_newline();
    char filename[strlen (yytext) + 1];
    int linenr;
    int scan_rc = sscanf (yytext, "# %d \"%[^\"]\"", &linenr, filename);
-   cout << "scan_rc = " << scan_rc << endl;
    if (scan_rc != 2) {
       errprintf ("%: %d: [%s]: invalid directive, ignored\n",
                  scan_rc, yytext);

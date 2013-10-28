@@ -1,3 +1,4 @@
+
 #include <string>
 #include <unordered_set>
 using namespace std;
@@ -21,12 +22,14 @@ void dump_stringset (FILE* out) {
       bool need_index = true;
       size_t curr_size = set.bucket_size (bucket);
       if (max_bucket_size < curr_size) max_bucket_size = curr_size;
-      for (stringset_bucket_citor itor = set.cbegin (bucket); itor != set.cend (bucket); ++itor) {
+      for (stringset_bucket_citor itor = set.cbegin (bucket);
+           itor != set.cend (bucket); ++itor) {
          if (need_index) fprintf (out, "stringset[%4lu]: ", bucket);
-         else fprintf (out, "          %4s   ", "");
+                    else fprintf (out, "          %4s   ", "");
          need_index = false;
          const string* str = &*itor;
-         fprintf (out, "%22lu %p->\"%s\"\n", set.hash_function()(*str), str, str->c_str());
+         fprintf (out, "%22lu %p->\"%s\"\n", set.hash_function()(*str),
+                  str, str->c_str());
       }
    }
    fprintf (out, "load_factor = %.3f\n", set.load_factor());
@@ -34,3 +37,4 @@ void dump_stringset (FILE* out) {
    fprintf (out, "max_bucket_size = %lu\n", max_bucket_size);
 }
 
+RCSC("$Id: stringset.cc,v 1.6 2013-10-10 17:44:18-07 - - $")
